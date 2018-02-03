@@ -18,10 +18,11 @@
                
       socket.on('message', function(message) {
         //Escape HTML characters
-        console.log('message');
-        console.log(message);
+        if (typeof(message)=='string'){
+          console.log('we')
+          message = JSON.parse(message);
+        }
         var data = message['message'];
-        
         //Append message to the bottom of the list
         $('#comments').append('<li>' + data + '</li>');
         window.scrollBy(0, 10000000000);
@@ -33,7 +34,7 @@
         if(event.keyCode != 13) return;
         var msg = entry_el.attr('value');
         if(msg){
-           socket.emit('send_message', {'message':msg}, function(data){
+           socket.emit('send_message', {'message':msg, 'secret':'qwertyuiop', 'session_key': '{{ session_key }}'}, function(data){
                 console.log(data);
            });
         
